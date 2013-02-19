@@ -20,6 +20,11 @@ module Trahald
     redirect 'home'
   end
 
+  get '/list' do
+    @keys = REDIS.keys
+    slim :list
+  end
+
   get '/:name' do
     @name = params[:name]
     @body = REDIS.get(params[:name])

@@ -1,0 +1,17 @@
+ul.nav{
+  padding: 0;
+  margin-top: 20px;
+}
+
+.nav li {
+  font-size: 80%;
+	display:inline;
+	margin-left: 2px;
+	padding:.5em;
+	border-bottom: 2px solid #AAF;
+}
+
+.nav li a{
+	text-decoration: none;
+	color: #99D;
+}

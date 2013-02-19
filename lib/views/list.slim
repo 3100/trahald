@@ -1,0 +1,11 @@
+h1 ページ一覧
+- if @keys.any?
+  ul#menu
+    - for key in @keys do
+      li
+        a href='/#{key}' #{key}
+- else
+  ul
+    li まだページが作成されていません。
+
+== slim :_submenu
