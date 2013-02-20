@@ -5,6 +5,7 @@ module Trahald
   require 'redis'
   require 'json'
   require 'uri'
+  require 'sass'
 
   configure do
     REDIS_URL = "redis://localhost:6379/"
@@ -18,6 +19,15 @@ module Trahald
 
   get '/' do
     redirect 'home'
+  end
+
+  get '/style.css' do
+    scss :style
+  end
+
+  get '/list' do
+    @keys = REDIS.keys.sort
+    slim :list
   end
 
   get '/:name' do
