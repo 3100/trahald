@@ -21,4 +21,5 @@ Gem::Specification.new do |gem|
   gem.add_dependency 'redis'
   gem.add_dependency 'sinatra'
   gem.add_dependency 'slim'
+  gem.add_dependency 'sass'
 end
