@@ -1,38 +1,47 @@
+# -*- coding: utf-8 -*-
 require_relative "trahald/version"
+require_relative "trahald/git"
+
 module Trahald
   require 'sinatra'
   require 'slim'
-  require 'redis'
   require 'json'
   require 'uri'
   require 'sass'
 
   configure do
-    REDIS_URL = "redis://localhost:6379/"
-    uri = URI.parse REDIS_URL
-    REDIS = Redis.new(
-      :host => uri.host,
-      :port => uri.port,
-      :password => uri.password
-    )
+    dir = Dir::pwd + "/data"
+    GIT = Git.new(dir)
   end
 
   get '/' do
     redirect 'home'
   end
 
+
   get '/style.css' do
     scss :style
   end
 
   get '/list' do
-    @keys = REDIS.keys.sort
+    @keys = GIT.list
     slim :list
   end
 
-  get '/:name' do
-    @name = params[:name]
-    @body = REDIS.get(params[:name])
+  get %r{^/(.+?)/edit$} do
+    puts "edit"
+    puts params[:captures]
+    @name = params[:captures][0]
+    @body = GIT.body(@name)
+    @body = "" unless @body
+    slim :edit
+  end
+
+  get %r{^/(.+?)$} do
+    puts params[:captures]
+    @name = params[:captures][0]
+    @body = GIT.body(@name)
+    puts "body:#{@body}"
     if @body
       slim :page
     else
@@ -41,16 +50,19 @@ module Trahald
     end
   end
 
-  get '/:name/edit' do
-    @name = params[:name]
-    @body = REDIS.get(params[:name])
-    slim :edit
-  end
-
-  post '/:edit' do
-    REDIS.set(params[:name], params[:body])
+  post %r{^/(.+?)$} do
     @name = params[:name]
     @body = params[:body]
+    if params[:comment]
+      @message = params[:comment]
+    else
+      @message = "update"
+    end
+
+    if GIT.add!(@name, @body)
+      GIT.commit!(@message)
+    end
+
     redirect "/#{@name}"
   end
 end

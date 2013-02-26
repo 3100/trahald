@@ -8,8 +8,8 @@ Gem::Specification.new do |gem|
   gem.version       = Trahald::VERSION
   gem.authors       = ["3100"]
   gem.email         = ["sugar16g@gmail.com"]
-  gem.description   = %q{TODO: Write a gem description}
-  gem.summary       = %q{TODO: Write a gem summary}
+  gem.description   = %q{a simple wiki}
+  gem.summary       = %q{a simple wiki}
   gem.homepage      = ""
 
   gem.files         = `git ls-files`.split($/)
@@ -17,9 +17,8 @@ Gem::Specification.new do |gem|
   gem.test_files    = gem.files.grep(%r{^(test|spec|features)/})
   gem.require_paths = ["lib"]
 
-  gem.add_dependency 'grit'
-  gem.add_dependency 'redis'
-  gem.add_dependency 'sinatra'
-  gem.add_dependency 'slim'
-  gem.add_dependency 'sass'
+  gem.add_dependency('grit', '~> 2.5.0')
+  gem.add_dependency('sinatra', '~>1.3.5')
+  gem.add_dependency('slim', '~>1.3.6')
+  gem.add_dependency('sass', '~>3.2.6')
 end
