@@ -1,7 +1,6 @@
 # -*- coding: utf-8 -*-
 
 module Trahald
-
   require 'grit'
 
   class Git
@@ -50,19 +49,19 @@ module Trahald
       list.sort
     end
 
-    #private
-    def first_commit
-      @repo.commits.first
-    end
-
+    private
     def dirs(name)
       d = name.split(/\/+/)
       d.pop #pop basename
       d
     end
 
+    def first_commit
+      @repo.commits.first
+    end
+
     def files(pos, tree, list)
-      tree.blobs.map{|blob|
+      tree.blobs.each{|blob|
         list.push pos + File.basename(blob.name.force_encoding("UTF-8"), ".#{@ext}")
       }
       tree.trees.each{|t|

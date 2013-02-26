@@ -18,7 +18,7 @@ Gem::Specification.new do |gem|
   gem.require_paths = ["lib"]
 
   gem.add_dependency('grit', '~> 2.5.0')
+  gem.add_dependency('sass', '~>3.2.6')
   gem.add_dependency('sinatra', '~>1.3.5')
   gem.add_dependency('slim', '~>1.3.6')
-  gem.add_dependency('sass', '~>3.2.6')
 end
