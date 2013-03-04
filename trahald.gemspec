@@ -18,7 +18,10 @@ Gem::Specification.new do |gem|
   gem.require_paths = ["lib"]
 
   gem.add_dependency('grit', '~> 2.5.0')
+  gem.add_dependency('kramdown', '~> 0.14.2')
   gem.add_dependency('sass', '~>3.2.6')
   gem.add_dependency('sinatra', '~>1.3.5')
   gem.add_dependency('slim', '~>1.3.6')
+
+  gem.add_development_dependency('rspec', '~> 2.13.0')
 end

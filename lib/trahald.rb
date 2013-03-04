@@ -3,9 +3,10 @@ require_relative "trahald/version"
 require_relative "trahald/git"
 
 module Trahald
+  require 'kramdown'
+  require 'json'
   require 'sinatra'
   require 'slim'
-  require 'json'
   require 'uri'
   require 'sass'
 
@@ -42,6 +43,7 @@ module Trahald
     @body = GIT.body(@name)
     puts "body:#{@body}"
     if @body
+      @body = Kramdown::Document.new(@body).to_html
       slim :page
     else
       @body = ""
@@ -49,9 +51,10 @@ module Trahald
     end
   end
 
-  post %r{^/(.+?)$} do
+  post "/edit" do
     @name = params[:name]
     @body = params[:body]
+    puts "name,body:#{@name},#{@body}"
     if params[:comment]
       @message = params[:comment]
     else
@@ -62,6 +65,7 @@ module Trahald
       GIT.commit!(@message)
     end
 
-    redirect "/#{@name}"
+    puts @name
+    redirect "/#{URI.escape(@name)}"
   end
 end
