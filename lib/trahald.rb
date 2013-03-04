@@ -19,10 +19,6 @@ module Trahald
     redirect 'home'
   end
 
-  get '/style.css' do
-    scss :style
-  end
-
   get '/list' do
     @keys = GIT.list
     slim :list
@@ -37,11 +33,27 @@ module Trahald
     slim :edit
   end
 
+  get %r{^/(.+?)\.md$} do
+    puts "md"
+    puts params[:captures]
+    @name = params[:captures][0]
+    @body = GIT.body(@name)
+    puts @body
+    if @body
+      slim :raw, :layout => :raw_layout
+    else
+      @body = ""
+      slim :edit
+    end
+  end
+
   get %r{^/(.+?)$} do
     puts params[:captures]
     @name = params[:captures][0]
     @body = GIT.body(@name)
     puts "body:#{@body}"
+    @style = scss :style
+    puts "style:#{@style}"
     if @body
       @body = Kramdown::Document.new(@body).to_html
       slim :page
