@@ -1,6 +1,8 @@
 # Trahald
 
-TODO: Write a gem description
+[![Build Status](https://travis-ci.org/3100/trahald.png?branch=master)](https://travis-ci.org/3100/trahald)
+
+Yet another simple wiki.
 
 ## Installation
 
