@@ -7,8 +7,6 @@ module Trahald
     def initialize(repo_path, ext="md")
       @repo_dir = repo_path
       @ext = ext
-      Grit::Repo.init(@repo_dir) unless FileTest.exist?(@repo_dir)
-      @repo = Grit::Repo.new(@repo_dir)
     end
 
     def add!(name, body)
@@ -17,7 +15,7 @@ module Trahald
       begin
         File.open(path, 'w'){|f| f.write(body)}
         Dir.chdir(@repo_dir){
-          @repo.add "#{name}.#{@ext}"
+          repo.add "#{name}.#{@ext}"
         }
         true
       rescue => exception
@@ -38,7 +36,7 @@ module Trahald
     end
 
     def commit!(message)
-      @repo.commit_index(message)
+      repo.commit_index(message)
     end
 
     def list
@@ -49,6 +47,10 @@ module Trahald
       list.sort
     end
 
+    def self.init_repo_if_needed(dir)
+     init_repo(dir) unless FileTest.exist? dir
+    end
+
     private
     def dirs(name)
       d = name.split(/\/+/)
@@ -57,7 +59,7 @@ module Trahald
     end
 
     def first_commit
-      @repo.commits.first
+      repo.commits.first
     end
 
     def files(pos, tree, list)
@@ -67,6 +69,14 @@ module Trahald
       tree.trees.each{|t|
         files "#{pos}#{t.name.force_encoding("UTF-8")}/",  t, list
       }
+    end
+
+    def repo
+     @repo ||= Grit::Repo.new @repo_dir
+    end
+
+    def self.init_repo(dir)
+      Grit::Repo.init dir
     end
   end
 end

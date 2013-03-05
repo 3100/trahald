@@ -12,7 +12,8 @@ module Trahald
 
   configure do
     dir = Dir::pwd + "/data"
-    GIT = Git.new(dir)
+    Git::init_repo_if_needed dir
+    GIT = Git.new dir
   end
 
   get '/' do
