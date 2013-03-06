@@ -4,7 +4,7 @@ module Trahald
   require 'redis'
   require 'uri'
 
-  class RedisClient
+  class RedisClient < BackendBase
     def initialize(url)
       uri = URI.parse url
       @redis = Redis.new(
