@@ -30,6 +30,7 @@ module Trahald
     end
 
     get '/list' do
+      @name = "list"
       @keys = DB.list
       slim :list
     end
@@ -61,11 +62,9 @@ module Trahald
       puts params[:captures]
       @name = params[:captures][0]
       @body = DB.body(@name)
-      puts "body:#{@body}"
-      @style = scss :style
-      puts "style:#{@style}"
       if @body
         @body = Kramdown::Document.new(@body).to_html
+        @tab = slim :tab
         slim :page
       else
         @body = ""

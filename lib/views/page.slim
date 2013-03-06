@@ -1,12 +1,5 @@
-h1 #{@name}
+== slim :header
 
 == @body
 
-ul.nav
-  li
-    a href="/#{@name}/edit" 編集
-  li
-    a href='/#{@name}.md' Raw
-  li
-    a href='/list' 一覧
-
+== slim :tab

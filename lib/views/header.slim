@@ -1,0 +1,26 @@
+/ul class="nav nav-pills"
+  li
+    a href="/" trahald
+  li
+    a href="/list" 一覧
+/hr
+
+/div class="navbar navbar-inverse"
+  div class="navbar-inner"
+    a class="brand" href="/#{@name}" #{@name}
+    ul class="nav"
+      li
+        a href="/" trahald
+      li
+        a href="/list" 一覧
+
+ul.breadcrumb
+  li.active
+    a href="/#{@name}" #{@name}
+    span.divider = "/"
+  li
+    a href="/" trahald
+    span.divider = "/"
+  li
+    a href="/list" 一覧
+

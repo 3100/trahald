@@ -1,10 +1,27 @@
-form action="/edit" method="post"
-  input type="text" name="name" value="#{@name}"
-  br
-  textarea name="body" #{@body}
-  br
-  input type="submit" value="作成/更新"
+script src="/js/markdown.js"
 
-ul.nav
-  li
-    a href='/list' 一覧
+javascript:
+  $(function(){
+    var updatePreview = function(){
+      $("#preview").html(markdown.toHTML($("#text-input").val()));
+    };
+    $(document).ready(updatePreview());
+    $("#text-input").on("keyup", function(event){
+      updatePreview();
+    });
+  });
+
+== slim :header
+
+div.row-fluid
+  div.span6
+    form action="/edit" method="post" style="margin-top:20px;"
+      div.row-fluid
+        input type="text" name="name" value="#{@name}" class="span12 input" style="font-size: 24px;"
+      div.row-fluid
+        textarea name="body" id="text-input" style="border:0; box-shadow: none; height: 500px;" class="span12" #{@body}
+      div.row-fluid
+        input type="submit" value="作成/更新" class="btn btn-primary"
+  div.span6#preview.well style="background: #fdfdfd; margin-top: 20px; height: 536px;"
+
+== slim :tab
