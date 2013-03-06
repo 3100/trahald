@@ -20,6 +20,26 @@ It will no longer supported in all senses after June 2013.
 This is just a library.
 To use Trahald as your wiki, see [3100/a_trahald](https://github.com/3100/a_trahald).
 
+## In development
+
+### Preparation
+
+```
+bundle insatll
+```
+
+### Running App
+
+```
+rackup -p $PORT
+```
+
+### Test
+
+```
+bundle exec rspec
+```
+
 ## Contributing
 
 1. Fork it
