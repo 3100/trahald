@@ -3,7 +3,7 @@ require File.expand_path(File.dirname(__FILE__) + '/spec_helper')
 
 describe "Trahald::RedisClient" do
   before(:all) do
-    @url = "redis://192.168.5.28:6379/"
+    @url = "redis://localhost:6379/"
     @redis = Trahald::RedisClient.new(@url)
     @redis.flush!
   end
