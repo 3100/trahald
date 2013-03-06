@@ -3,7 +3,7 @@
 module Trahald
   require 'grit'
 
-  class Git
+  class Git < BackendBase
     def initialize(repo_path, ext="md")
       @repo_dir = repo_path
       @ext = ext

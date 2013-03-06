@@ -6,7 +6,7 @@ Yet another simple wiki on git.
 
 You need:
 
-* git
+* git or redis as backend database.
 * ruby 1.9.3 (2.0.0 does not work with this wiki by now.)
 * linux or mac. (now engage in support for windows.)
 
@@ -25,13 +25,30 @@ To use Trahald as your wiki, see [3100/a_trahald](https://github.com/3100/a_trah
 ### Preparation
 
 ```
-bundle insatll
+bundle install
+```
+
+By default, Bundler installs git and redis gems. You can use --without option with these groups:
+
+* git
+* redis
+
+e.g. If you do not need redis gem, add the option:
+
+```
+bundle install --without redis
 ```
 
 ### Running App
 
 ```
 rackup -p $PORT
+```
+
+By default, Trahald use git. If you want to use redis alternatively, add -E option:
+
+```
+rackup -p $PORT -E "redis"
 ```
 
 ### Test

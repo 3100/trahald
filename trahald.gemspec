@@ -17,7 +17,6 @@ Gem::Specification.new do |gem|
   gem.test_files    = gem.files.grep(%r{^(test|spec|features)/})
   gem.require_paths = ["lib"]
 
-  gem.add_dependency('grit', '~> 2.5.0')
   gem.add_dependency('kramdown', '~> 0.14.2')
   gem.add_dependency('sass', '~>3.2.6')
   gem.add_dependency('sinatra', '~>1.3.5')
