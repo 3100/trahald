@@ -8,8 +8,8 @@ Gem::Specification.new do |gem|
   gem.version       = Trahald::VERSION
   gem.authors       = ["3100"]
   gem.email         = ["sugar16g@gmail.com"]
-  gem.description   = %q{a simple wiki}
-  gem.summary       = %q{a simple wiki}
+  gem.description   = %q{a simple wiki on git}
+  gem.summary       = %q{a simple wiki on git}
   gem.homepage      = ""
 
   gem.files         = `git ls-files`.split($/)

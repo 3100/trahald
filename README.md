@@ -17,21 +17,8 @@ it will no longer supported in all senses after June 2013.
 
 ## Installation
 
-Add this line to your application's Gemfile:
-
-    gem 'trahald'
-
-And then execute:
-
-    $ bundle
-
-Or install it yourself as:
-
-    $ gem install trahald
-
-## Usage
-
-TODO: Write usage instructions here
+This is just a library.
+To use Trahald as your wiki, see [3100/a_trahald](https://github.com/3100/a_trahald).
 
 ## Contributing
 
