@@ -4,9 +4,14 @@
 
 Yet another simple wiki on git.
 
+* realtime preview in editing
+* markdown
+* utf-8 page title and contents (You can use 日本語, français, ...)
+* bootstrap
+
 You need:
 
-* git or redis as backend database.
+* git or redis(mainly for Heroku) as backend database.
 * ruby 1.9.3 (2.0.0 does not work with this wiki by now.)
 * linux or mac. (now engage in support for windows.)
 
