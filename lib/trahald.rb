@@ -1,7 +1,5 @@
 # -*- coding: utf-8 -*-
 require_relative "trahald/backend-base"
-require_relative "trahald/git"
-require_relative "trahald/redis-client"
 require_relative "trahald/version"
 
 module Trahald
@@ -15,12 +13,14 @@ module Trahald
   class App < Sinatra::Base
 
     configure :production, :development, :git do
+      require_relative "trahald/git"
       dir = Dir::pwd + "/data"
       Git::init_repo_if_needed dir
       DB = Git.new dir
     end
 
     configure :redis do
+      require_relative "trahald/redis-client"
       url = "redis://localhost:6379"
       DB = RedisClient.new url
     end
@@ -33,6 +33,20 @@ module Trahald
       @name = "list"
       @keys = DB.list
       slim :list
+    end
+    
+    get %r{^/(.+?)/slide$} do
+      puts "slide"
+      puts params[:captures]
+      @name = params[:captures][0]
+      @body = DB.body(@name)
+      puts @body
+      if @body
+        slim :slide, :layout => :raw_layout
+      else
+        @body = ""
+        slim :edit
+      end
     end
 
     get %r{^/(.+?)/edit$} do
