@@ -1,7 +1,7 @@
 # -*- coding: utf-8 -*-
 require File.expand_path(File.dirname(__FILE__) + '/spec_helper')
 
-describe "Trahald::Git" do
+describe "Trahald::Git", :if => defined? Trahald::Git do
   before(:all) do
     @dir = File.expand_path(File.dirname(__FILE__) + '/repos_for_spec')
     @git = Trahald::Git.new(@dir)

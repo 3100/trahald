@@ -1,7 +1,7 @@
 # -*- coding: utf-8 -*-
 require File.expand_path(File.dirname(__FILE__) + '/spec_helper')
 
-describe "Trahald::RedisClient" do
+describe "Trahald::RedisClient", :if => defined? Trahald::RedisClient do
   before(:all) do
     @url = "redis://localhost:6379/"
     @redis = Trahald::RedisClient.new(@url)
