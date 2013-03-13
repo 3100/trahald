@@ -4,5 +4,6 @@ rvm:
 services:
   - redis-server
 
-script: bundle exec rspec spec/ 
+script:
+  - export RACK_ENV=test && bundle exec rspec spec/ 
 

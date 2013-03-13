@@ -12,6 +12,11 @@ module Trahald
 
   class App < Sinatra::Base
 
+    configure :test do
+      require_relative "trahald/git"
+      require_relative "trahald/redis-client"
+    end
+
     configure :production, :development, :git do
       require_relative "trahald/git"
       dir = Dir::pwd + "/data"
