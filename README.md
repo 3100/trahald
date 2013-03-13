@@ -8,12 +8,16 @@ Yet another simple wiki on git.
 * markdown
 * utf-8 page title and contents (You can use 日本語, français, ...)
 * bootstrap
+* slideshow
 
 You need:
 
-* git or redis(mainly for Heroku) as backend database.
-* ruby 1.9.3 (2.0.0 does not work with this wiki by now.)
-* linux or mac. (now engage in support for windows.)
+* `git` or `redis`(mainly for Heroku) as backend database.
+* `ruby 1.9.3` or `jruby 1.7.3`
+
+Restrictions:
+
+* If you use `jruby` or `windows`, `git` is not available. Run trahald with `-E` options like `rackup -E redis`.
 
 This project does not support ruby 1.8.7.
 It will no longer supported in all senses after June 2013.
@@ -33,12 +37,12 @@ To use Trahald as your wiki, see [3100/a_trahald](https://github.com/3100/a_trah
 bundle install
 ```
 
-By default, Bundler installs git and redis gems. You can use --without option with these groups:
+By default, Bundler installs `git` and `redis` gems. You can use `--without` option with these groups:
 
 * git
 * redis
 
-e.g. If you do not need redis gem, add the option:
+e.g. If you do not need `redis` gem, add the option:
 
 ```
 bundle install --without redis
@@ -50,10 +54,10 @@ bundle install --without redis
 rackup -p $PORT
 ```
 
-By default, Trahald use git. If you want to use redis alternatively, add -E option:
+By default, Trahald use `git`. If you want to use `redis` alternatively, add `-E` option:
 
 ```
-rackup -p $PORT -E "redis"
+rackup -p $PORT -E redis
 ```
 
 ### Test
