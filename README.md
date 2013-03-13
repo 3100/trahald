@@ -2,7 +2,7 @@
 
 [![Build Status](https://travis-ci.org/3100/trahald.png?branch=master)](https://travis-ci.org/3100/trahald)
 
-Yet another simple wiki on git.
+Yet another simple wiki on git. [DEMO](http://trahald.herokuapp.com/home)
 
 * realtime preview in editing
 * markdown
