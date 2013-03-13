@@ -1,9 +1,22 @@
 language: ruby
 rvm:
   - 1.9.3
+  - jruby-19mode
 services:
   - redis-server
+env:
+  - RACK_ENV=redis
+  - RACK_ENV=git
+install:
+  - bundle install
 
-script:
-  - export RACK_ENV=test && bundle exec rspec spec/ 
+matrix:
+  include:
+    - rvm: jruby-19mode
+      services: redis-server
+      env: RACK_ENV=redis
+      install: bundle install --without=git
+
+#script:
+#  - bundle exec rspec spec/
 
