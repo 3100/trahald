@@ -5,14 +5,10 @@ module Trahald
   require 'uri'
 
   class RedisClient < BackendBase
-    def initialize(url)
-      uri = URI.parse url
-      @redis = Redis.new(
-        :host => uri.host,
-        :port => uri.port
-      )
 
-      @params = Hash::new
+    def initialize(url)
+      @redis = Redis.new(:url => url)
+      @params = Hash.new
     end
 
     # This method does not set data to Redis DB. To confirm, use commit! after add!.

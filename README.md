@@ -29,6 +29,16 @@ It will no longer supported in all senses after June 2013.
 This is just a library.
 To use Trahald as your wiki, see [3100/a_trahald](https://github.com/3100/a_trahald).
 
+## Configuration
+
+If you use `redis`, set your redis url to env `TRAHALD_REDIS_URL`:
+
+    export TRAHALD_REDIS_URL="redis://redistogo:password@sub.redistogo.com:port/"
+
+or
+
+    heroku config:set TRAHALD_REDIS_URL=redis://redistogo:password@sub.redistogo.com:port/
+
 ## In development
 
 ### Preparation

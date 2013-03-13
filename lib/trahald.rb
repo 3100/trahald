@@ -26,8 +26,7 @@ module Trahald
 
     configure :redis do
       require_relative "trahald/redis-client"
-      url = "redis://localhost:6379"
-      DB = RedisClient.new url
+      DB = RedisClient.new ENV["TRAHALD_REDIS_URL"]
     end
 
     get '/' do
