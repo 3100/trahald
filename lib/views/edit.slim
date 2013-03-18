@@ -1,4 +1,5 @@
 script src="/lib/markdown/markdown.js"
+script src="http://proger.i-forge.net/filedrop-min.js"
 
 javascript:
   $(function(){
@@ -9,6 +10,25 @@ javascript:
     $("#text-input").on("keyup", function(event){
       updatePreview();
     });
+
+    var options = {iframe: {url: '/upload'}};
+    var zone = new FileDrop('zone', options);
+    zone.on.send.push(function(files){
+      var unix_t = parseInt(new Date / 1000);
+      for(var i=0; i<files.length;++i){
+        name = unix_t + "." + files[i].name.split('.').pop()
+        files[i].name = name
+        files[i].on.done.push(function(xhr,e){
+          var input = $("#text-input").val() + "\n![" + name + "](/#{UPLOAD}/" + name + ")\n";
+          $("#text-input").val(input);
+          updatePreview();
+        });
+        files[i].on.error.push(function(e, xhr){
+          alert(xhr.response);
+        });
+        files[i].SendTo('/upload');
+      }
+    });
   });
 
 == slim :header
@@ -18,7 +38,7 @@ div.row-fluid
     form action="/edit" method="post" style="margin-top:20px;"
       div.row-fluid
         input type="text" name="name" value="#{@name}" class="span12 input" style="font-size: 24px;"
-      div.row-fluid
+      fieldset#zone.row-fluid
         textarea name="body" id="text-input" style="border:0; box-shadow: none; height: 500px;" class="span12" #{@body}
       div.row-fluid
         input type="submit" value="作成/更新" class="btn btn-primary"

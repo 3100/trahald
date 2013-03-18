@@ -7,8 +7,9 @@ Yet another simple wiki on git. [DEMO](http://trahald.herokuapp.com/home)
 * realtime preview in editing
 * markdown
 * utf-8 page title and contents (You can use 日本語, français, ...)
-* bootstrap
 * slideshow
+* drag & drop image upload
+* bootstrap
 
 You need:
 
@@ -18,6 +19,7 @@ You need:
 Restrictions:
 
 * If you use `jruby` or `windows`, `git` is not available. Run trahald with `-E` options like `rackup -E redis`.
+* If you use this on `heroku`, image uploader is unable to use.
 
 This project does not support ruby 1.8.7.
 It will no longer supported in all senses after June 2013.
