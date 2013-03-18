@@ -29,6 +29,19 @@ module Trahald
       DB = RedisClient.new ENV["TRAHALD_REDIS_URL"]
     end
 
+    configure do
+      UPLOAD = "upload"
+      UPLOAD_DIR = "#{Dir::pwd}/lib/public/#{UPLOAD}"
+      UPLOAD_LIMIT_SIZE = 2000000 # 2MB
+      Dir::mkdir UPLOAD_DIR unless FileTest.exist? UPLOAD_DIR
+    end
+
+    helpers do
+      def request_headers
+        env.inject({}){|acc, (k,v) | acc[$1.downcase] = v if k =~ /^http_(.*)/i; acc}
+      end
+    end
+
     get '/' do
       redirect 'home'
     end
@@ -37,6 +50,10 @@ module Trahald
       @name = "list"
       @keys = DB.list
       slim :list
+    end
+
+    get '/css/fd.css' do
+      scss :fd 
     end
     
     get %r{^/(.+?)/slide$} do
@@ -106,6 +123,26 @@ module Trahald
 
       puts @name
       redirect "/#{URI.escape(@name)}"
+    end
+
+    post "/upload" do
+      header = request_headers
+      data = request.body.read
+      name = header["x_file_name"]
+      size = header["x_file_size"].to_i
+      halt(400, "Invalid request. (Maybe filetype is forbidden.)") unless name
+      halt(400, "Only gif, jpg, png file is enable.") unless ['png', 'jpg', 'jpeg', 'gif'].include? name.split('.').last.downcase 
+      filepath = UPLOAD_DIR +  "/" + name.downcase
+      halt(423, "File has already existed.") if File.exist? filepath
+      halt(413, "File size is too big.") if size > UPLOAD_LIMIT_SIZE
+      begin
+        File.open(filepath, "w") do |f|
+          f.write(data)
+        end
+      rescue Exception
+        halt(403, "File can not be written. ")
+      end
+      halt 200
     end
 
     run! if $0 == __FILE__
