@@ -4,6 +4,8 @@ module Trahald
   require 'grit'
 
   class Git < BackendBase
+
+
     def initialize(repo_path, ext="md")
       @repo_dir = repo_path
       @ext = ext
@@ -39,6 +41,15 @@ module Trahald
       repo.commit_index(message)
     end
 
+    # experimental
+    def data
+      first = first_commit
+      return [] unless first
+      data = []
+      files2('', first.tree, data)
+      data
+    end
+
     def list
       first = first_commit
       return [] unless first
@@ -68,6 +79,17 @@ module Trahald
       }
       tree.trees.each{|t|
         files "#{pos}#{t.name.force_encoding("UTF-8")}/",  t, list
+      }
+    end
+
+    def files2(pos, tree, data)
+      tree.blobs.each{|blob|
+        path = pos + File.basename(blob.name.force_encoding("UTF-8"), ".#{@ext}")
+        mdbody = MarkdownBody.new(path, body(path))
+        data.push mdbody.summary 
+      }
+      tree.trees.each{|t|
+        files "#{pos}#{t.name.force_encoding("UTF-8")}/",  t, data 
       }
     end
 

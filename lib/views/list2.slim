@@ -1,0 +1,19 @@
+== slim :header
+
+h1 =@title
+- if @data.any?
+  - for summary in @data do
+    ul.thumbnails
+      li.span4
+        div.thumbnail
+          a href="#{summary.name}"
+            h3 =summary.name
+          - if summary.img
+            a href="#{summary.name}"
+              img src="#{summary.img}" alt=""/
+          p
+            small=summary.text
+- else
+  ul
+    li まだページが作成されていません。
+

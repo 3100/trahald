@@ -1,5 +1,6 @@
 # -*- coding: utf-8 -*-
 require_relative "trahald/backend-base"
+require_relative "trahald/markdown-body"
 require_relative "trahald/version"
 
 module Trahald
@@ -51,6 +52,13 @@ module Trahald
       @title = "ページ一覧"
       @keys = DB.list
       slim :list
+    end
+
+    get '/list2' do
+     @name = "list2"
+     @title = "summary"
+     @data = DB.data
+     slim :list2
     end
 
     get '/uploads' do

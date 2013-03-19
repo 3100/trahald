@@ -21,6 +21,10 @@ module Trahald
       raise "Called abstract method: list"
     end
 
+    def data
+      raise "Called abstract method: data"
+    end
+
     def self.init_repo_if_needed(dir)
       raise "Called abstract method: self.init_repo_if_needed"
     end

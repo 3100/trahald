@@ -32,6 +32,12 @@ module Trahald
       @redis.flushdb
     end
 
+    def data
+      @redis.keys.map do |k|
+        MarkdownBody.new(k, body(k)).summary
+      end
+    end
+
     def list
       @redis.keys.sort
     end
