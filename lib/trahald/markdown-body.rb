@@ -6,11 +6,12 @@ module Trahald
 
   class MarkdownBody
     MAX_TEXT_SIZE = 160
-    SUMMARY = Struct.new("Summary", :name, :img, :text) # TODO :date
+    Summary = Struct.new("Summary", :name, :imgs, :body, :date)
 
-    def initialize(name, body)
+    def initialize(name, body, date)
       @name = name
       @body = body
+      @date = date
     end
 
     def pre 
@@ -25,17 +26,17 @@ module Trahald
     def img_src
       pattern = Regexp.new '!\[.+\]\((.+)\)'
       raw = @body.split('\n')
-      raw.each do |r|
-        return $1 if pattern =~ r
-      end
-      nil
+      raw.map{|r|
+        $1 if pattern =~ r
+      }.select{|i| i}
     end
 
     def summary
-      SUMMARY.new(
+      Summary.new(
         @name,
         img_src,
-        pre
+        pre,
+        @date
       )
     end
   end

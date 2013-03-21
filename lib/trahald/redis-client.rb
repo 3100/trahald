@@ -11,19 +11,29 @@ module Trahald
       @params = Hash.new
     end
 
+    def article(name)
+      json = @redis.zrange(name, -1, -1).first # nil unless zrange(..).any?
+      if json; Article.from_json(json) else nil end
+    end
+
     # This method does not set data to Redis DB. To confirm, use commit! after add!.
     def add!(name, body)
       @params[name] = body
     end
 
     def body(name)
-      @redis.get name
+      a = article name
+      if a; a.body else nil end
     end
 
     # message is not used.
     def commit!(message)
+      date = Time.now
       @params.each{|name, body|
-        @redis.set(name, body)
+        json = Article.new(name, body, date).to_json
+        zcard = @redis.zcard name
+        @redis.zadd name, zcard+1, json
+        #@redis.set(name, body)
       }
     end
 
@@ -33,8 +43,9 @@ module Trahald
     end
 
     def data
-      @redis.keys.map do |k|
-        MarkdownBody.new(k, body(k)).summary
+      @redis.keys.map do |name|
+        a = article name 
+        MarkdownBody.new(name, a.body, a.date).summary
       end
     end
 

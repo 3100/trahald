@@ -16,7 +16,7 @@ javascript:
     zone.on.send.push(function(files){
       var unix_t = parseInt(new Date / 1000);
       for(var i=0; i<files.length;++i){
-        name = unix_t + "." + files[i].name.split('.').pop()
+        name = unix_t + "." + files[i].name.split('.').pop().toLowerCase();
         files[i].name = name
         files[i].on.done.push(function(xhr,e){
           var input = $("#text-input").val() + "\n![" + name + "](/#{UPLOAD}/" + name + ")\n";

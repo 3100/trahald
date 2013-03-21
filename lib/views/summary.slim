@@ -16,18 +16,20 @@ javascript:
     });
   });
 
-h1 =@title
+/h1 =@title
 - if @data.any?
   ul#ultarget.thumbnails
     - for summary in @data do
       li.thumbnail.item.span4
         a href="#{summary.name}"
           h3 =summary.name
-        - if summary.img
+        - if summary.imgs.any?
           a href="#{summary.name}"
-            img src="#{summary.img}" alt=""/
+            img src="#{summary.imgs.first}" alt=""/
+        p=summary.body
         p
-          small=summary.text
+          small
+            em="更新日時: #{summary.date.to_s}"
 - else
   ul
     li まだページが作成されていません。

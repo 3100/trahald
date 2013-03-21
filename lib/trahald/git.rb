@@ -11,13 +11,25 @@ module Trahald
       @ext = ext
     end
 
+    def article(name)
+      commit = repo.commits.select{|c|
+        c.diffs.first.b_path == "#{name}.#{@ext}".force_encoding("ASCII-8BIT")
+      }.first
+      return nil unless commit
+      Article.new(
+        name,
+        commit.diffs.first.b_blob.data.force_encoding("UTF-8"),
+        commit.date
+      )
+    end
+
     def add!(name, body)
       path = "#{@repo_dir}/#{name}.#{@ext}"
       FileUtils.mkdir_p File.dirname(path)
       begin
         File.open(path, 'w'){|f| f.write(body)}
         Dir.chdir(@repo_dir){
-          repo.add "#{name}.#{@ext}"
+          repo.add "#{name}.#{@ext}".force_encoding("ASCII-8BIT")
         }
         true
       rescue => exception
@@ -26,7 +38,13 @@ module Trahald
       end
     end
 
+    #experimental
     def body(name)
+      a = article(name)
+      if a; a.body else nil end
+    end
+
+    def body_old(name)
       first = first_commit
       return nil unless first
 
@@ -75,9 +93,11 @@ module Trahald
 
     def files(pos, tree, list)
       tree.blobs.each{|blob|
+        puts blob.name
         list.push pos + File.basename(blob.name.force_encoding("UTF-8"), ".#{@ext}")
       }
       tree.trees.each{|t|
+        puts t.name
         files "#{pos}#{t.name.force_encoding("UTF-8")}/",  t, list
       }
     end
@@ -85,11 +105,12 @@ module Trahald
     def files2(pos, tree, data)
       tree.blobs.each{|blob|
         path = pos + File.basename(blob.name.force_encoding("UTF-8"), ".#{@ext}")
-        mdbody = MarkdownBody.new(path, body(path))
-        data.push mdbody.summary 
+        a = article(path)
+        mdbody = MarkdownBody.new(path, a.body, a.date)
+        data.push mdbody.summary
       }
       tree.trees.each{|t|
-        files "#{pos}#{t.name.force_encoding("UTF-8")}/",  t, data 
+        files "#{pos}#{t.name.force_encoding("UTF-8")}/",  t, data
       }
     end
 

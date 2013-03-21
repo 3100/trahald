@@ -2,11 +2,16 @@
 
 module Trahald
   class BackendBase
+
     def initialize
     end
 
     def add!(name, body)
       raise "Called abstract method: add!"
+    end
+
+    def article(name)
+      raise "Called abstract method: article"
     end
 
     def body(name)

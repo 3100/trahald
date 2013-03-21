@@ -1,4 +1,5 @@
 # -*- coding: utf-8 -*-
+require_relative "trahald/article"
 require_relative "trahald/backend-base"
 require_relative "trahald/markdown-body"
 require_relative "trahald/version"
@@ -44,7 +45,8 @@ module Trahald
     end
 
     get '/' do
-      redirect 'home'
+      #redirect 'home'
+      redirect 'summary'
     end
 
     get '/list' do
@@ -55,9 +57,11 @@ module Trahald
     end
 
     get '/summary' do
-     @name = "summary"
-     @title = "summary"
-     @data = DB.data
+     @name = "summary" # not used
+     @title = "summary" # not used
+     @data = DB.data.sort_by{|d| d.date}.reverse
+     @data.each{|d|
+       puts d.date}
      slim :summary
     end
 
@@ -112,9 +116,10 @@ module Trahald
     get %r{^/(.+?)$} do
       puts params[:captures]
       @name = params[:captures][0]
-      @body = DB.body(@name)
-      if @body
-        @body = Kramdown::Document.new(@body).to_html
+      article = DB.article(@name)
+      if article 
+        @body = Kramdown::Document.new(article.body).to_html
+        @date = article.date
         @tab = slim :tab
         slim :page
       else
