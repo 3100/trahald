@@ -4,17 +4,15 @@ module Trahald
   require 'grit'
 
   class Git < BackendBase
-
-
     def initialize(repo_path, ext="md")
       @repo_dir = repo_path
       @ext = ext
     end
 
     def article(name)
-      commit = repo.commits.select{|c|
-        c.diffs.first.b_path == "#{name}.#{@ext}".force_encoding("ASCII-8BIT")
-      }.first
+      commit = repo.commits('master', false).find{|c|
+        c.diffs.first.b_path.force_encoding("ASCII-8BIT") == "#{name}.#{@ext}".force_encoding("ASCII-8BIT")
+      }
       return nil unless commit
       Article.new(
         name,
@@ -106,11 +104,15 @@ module Trahald
       tree.blobs.each{|blob|
         path = pos + File.basename(blob.name.force_encoding("UTF-8"), ".#{@ext}")
         a = article(path)
+        #unless a
+        #  puts "article(path) is nil. path:" + path
+        #  next
+        #end
         mdbody = MarkdownBody.new(path, a.body, a.date)
         data.push mdbody.summary
       }
       tree.trees.each{|t|
-        files "#{pos}#{t.name.force_encoding("UTF-8")}/",  t, data
+        files2 "#{pos}#{t.name.force_encoding("UTF-8")}/",  t, data
       }
     end
 
