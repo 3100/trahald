@@ -1,0 +1,34 @@
+== slim :header
+script src="/lib/masonry/jquery.masonry.min.js"
+
+css:
+  .item{
+    width: 300px;
+    margin: 10px;
+    float: center;
+  }
+
+javascript:
+  $(function(){
+    $('#ultarget').masonry({
+      itemSelector: '.item',
+      columnWidth: 350
+    });
+  });
+
+h1 =@title
+- if @data.any?
+  ul#ultarget.thumbnails
+    - for summary in @data do
+      li.thumbnail.item.span4
+        a href="#{summary.name}"
+          h3 =summary.name
+        - if summary.img
+          a href="#{summary.name}"
+            img src="#{summary.img}" alt=""/
+        p
+          small=summary.text
+- else
+  ul
+    li まだページが作成されていません。
+

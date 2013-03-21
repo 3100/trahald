@@ -54,11 +54,11 @@ module Trahald
       slim :list
     end
 
-    get '/list2' do
-     @name = "list2"
+    get '/summary' do
+     @name = "summary"
      @title = "summary"
      @data = DB.data
-     slim :list2
+     slim :summary
     end
 
     get '/uploads' do
