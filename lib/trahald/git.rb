@@ -61,9 +61,7 @@ module Trahald
     def data
       first = first_commit
       return [] unless first
-      data = []
-      files2('', first.tree, data)
-      data
+      summary 50
     end
 
     def list
@@ -100,20 +98,17 @@ module Trahald
       }
     end
 
-    def files2(pos, tree, data)
-      tree.blobs.each{|blob|
-        path = pos + File.basename(blob.name.force_encoding("UTF-8"), ".#{@ext}")
-        a = article(path)
-        #unless a
-        #  puts "article(path) is nil. path:" + path
-        #  next
-        #end
-        mdbody = MarkdownBody.new(path, a.body, a.date)
-        data.push mdbody.summary
-      }
-      tree.trees.each{|t|
-        files2 "#{pos}#{t.name.force_encoding("UTF-8")}/",  t, data
-      }
+    # args:
+    #   max: number of commits gotten. if max is false, all commits are gotten.
+    def summary(max=false)
+      repo.commits('master', max).map{|commit|
+        path = commit.diffs.first.b_path.force_encoding("UTF-8")
+        MarkdownBody.new(
+          path.slice(0, path.size - (@ext.size+1)),
+          commit.diffs.first.b_blob.data.force_encoding("UTF-8"),
+          commit.date
+        ).summary
+      }.uniq{|i| i.name}
     end
 
     def repo
