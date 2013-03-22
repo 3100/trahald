@@ -121,7 +121,7 @@ module Trahald
       puts params[:captures]
       @name = params[:captures][0]
       article = DB.article(@name)
-      if article 
+      if article
         @body = Kramdown::Document.new(article.body).to_html
         @date = article.date
         @tab = slim :tab
@@ -133,7 +133,8 @@ module Trahald
     end
 
     post "/edit" do
-      @name = params[:name]
+      @name = params[:name].strip # remove spaces, tabs, etc.
+      redirect "/" if @name.nil? or @name.empty?
       @body = params[:body]
       puts "name,body:#{@name},#{@body}"
       if params[:comment]
