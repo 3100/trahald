@@ -38,9 +38,8 @@ module Trahald
         json = Article.new(name, body, date).to_json
         zcard = @redis.zcard name
         @redis.zadd name, zcard+1, json
-        #@redis.set(name, body)
+        @redis.sadd KEY_SET, name
       }
-      @redis.sadd KEY_SET, name
       @redis.set MODIFIED_DATE, date.to_s
     end
 
