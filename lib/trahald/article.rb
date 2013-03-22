@@ -25,7 +25,7 @@ module Trahald
     def Article.from_json(json)
       begin
         h = JSON.parse json
-        Article.new(h[:name], h[:body], h[:date])
+        Article.new(h["name"], h["body"], h["date"])
       rescue exception
         "Json parse error."
       end

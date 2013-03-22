@@ -60,8 +60,6 @@ module Trahald
      @name = "summary" # not used
      @title = "summary" # not used
      @data = DB.data.sort_by{|d| d.date}.reverse
-     @data.each{|d|
-       puts d.date}
      slim :summary
     end
 

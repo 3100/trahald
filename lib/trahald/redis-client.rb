@@ -44,7 +44,7 @@ module Trahald
 
     def data
       @redis.keys.map do |name|
-        a = article name 
+        a = article name
         MarkdownBody.new(name, a.body, a.date).summary
       end
     end
