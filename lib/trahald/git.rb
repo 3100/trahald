@@ -64,6 +64,10 @@ module Trahald
       summary 50
     end
 
+    def last_modified
+      first_commit.date
+    end
+
     def list
       first = first_commit
       return [] unless first
@@ -84,6 +88,7 @@ module Trahald
     end
 
     def first_commit
+      return Time.now unless repo.commits.any?
       repo.commits.first
     end
 

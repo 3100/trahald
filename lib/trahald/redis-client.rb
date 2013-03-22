@@ -5,6 +5,11 @@ module Trahald
   require 'uri'
 
   class RedisClient < BackendBase
+    # track all page names.
+    KEY_SET = ".keys" # TODO: this must not be collided with any page names.
+
+    # for using cache.
+    MODIFIED_DATE = ".modified" # TODO: same
 
     def initialize(url)
       @redis = Redis.new(:url => url)
@@ -35,6 +40,8 @@ module Trahald
         @redis.zadd name, zcard+1, json
         #@redis.set(name, body)
       }
+      @redis.sadd KEY_SET, name
+      @redis.set MODIFIED_DATE, date.to_s
     end
 
     # CAUTION! This method flush data on current db.
@@ -43,14 +50,19 @@ module Trahald
     end
 
     def data
-      @redis.keys.map do |name|
+      @redis.smembers(KEY_SET).map do |name|
         a = article name
         MarkdownBody.new(name, a.body, a.date).summary
       end
     end
 
+    def last_modified
+      date = @redis.get(MODIFIED_DATE)
+      if date; Time.parse date else Time.now end
+    end
+
     def list
-      @redis.keys.sort
+      @redis.smembers(KEY_SET).sort
     end
 
     def self.init_repo_if_needed(dir)

@@ -22,6 +22,10 @@ module Trahald
       raise "Called abstract method: commit!"
     end
 
+    def last_modified
+      raise "Called abstract method: last_modified"
+    end
+
     def list
       raise "Called abstract method: list"
     end

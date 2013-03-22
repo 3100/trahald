@@ -44,12 +44,17 @@ module Trahald
       end
     end
 
+    before do
+      expires 500, :public, :must_revalidate
+    end
+
     get '/' do
       #redirect 'home'
       redirect 'summary'
     end
 
     get '/list' do
+      last_modified DB.last_modified
       @name = "list"
       @title = "ページ一覧"
       @keys = DB.list
@@ -57,6 +62,7 @@ module Trahald
     end
 
     get '/summary' do
+     last_modified DB.last_modified
      @name = "summary" # not used
      @title = "summary" # not used
      @data = DB.data.sort_by{|d| d.date}.reverse
