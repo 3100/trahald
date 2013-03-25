@@ -4,6 +4,8 @@ module Trahald
   require 'grit'
 
   class Git < BackendBase
+    UNIT = 50
+
     def initialize(repo_path, ext="md")
       @repo_dir = repo_path
       @ext = ext
@@ -12,7 +14,7 @@ module Trahald
     def article(name)
       path = "#{name}.#{@ext}".force_encoding("ASCII-8BIT")
       skip = 0
-      tail = 20
+      tail = UNIT
       commit = nil
       loop do
         #split because repo.commits('master', false) often causes SystemStackError.
@@ -21,7 +23,7 @@ module Trahald
         }
         break if commit
         skip = tail
-        tail += 20
+        tail += UNIT
       end
       return nil unless commit
 
