@@ -45,7 +45,8 @@ module Trahald
     end
 
     before do
-      expires 500, :public, :must_revalidate
+      cache_control :public, :no_cache, :max_age => 10
+      #expires 500, :public, :must_revalidate
     end
 
     get '/' do
@@ -122,6 +123,7 @@ module Trahald
       @name = params[:captures][0]
       article = DB.article(@name)
       if article
+        last_modified article.date
         @body = Kramdown::Document.new(article.body).to_html
         @date = article.date
         @tab = slim :tab

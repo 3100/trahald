@@ -9,6 +9,8 @@ module Trahald
     def initialize(repo_path, ext="md")
       @repo_dir = repo_path
       @ext = ext
+
+      Grit::Git.git_timeout = 30
     end
 
     def article(name)
