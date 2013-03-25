@@ -10,10 +10,21 @@ module Trahald
     end
 
     def article(name)
-      commit = repo.commits('master', false).find{|c|
-        c.diffs.first.b_path.force_encoding("ASCII-8BIT") == "#{name}.#{@ext}".force_encoding("ASCII-8BIT")
-      }
+      path = "#{name}.#{@ext}".force_encoding("ASCII-8BIT")
+      skip = 0
+      tail = 20
+      commit = nil
+      loop do
+        #split because repo.commits('master', false) often causes SystemStackError.
+        commit = repo.commits('master', tail, skip).find{|c|
+          c.diffs.first.b_path.force_encoding("ASCII-8BIT") == path
+        }
+        break if commit
+        skip = tail
+        tail += 20
+      end
       return nil unless commit
+
       Article.new(
         name,
         commit.diffs.first.b_blob.data.force_encoding("UTF-8"),
