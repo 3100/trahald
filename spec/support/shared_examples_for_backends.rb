@@ -15,6 +15,7 @@ shared_examples 'backend db' do
   end
 
   it "should enable to add and commit an another file" do
+    sleep 2
     message = "コミット"
     name2 = "サンプル"
     body2 = "# タイトル\n\n* いち\n* に\n* さん"
@@ -24,6 +25,7 @@ shared_examples 'backend db' do
   end
 
   it "should enable to add and commit an yet another file" do
+    sleep 2
     message = "コミット"
     name3 = "サンプル/初夢"
     body3 = "# タイトル\n\n* 富士\n* 鷹\n* なすび"
