@@ -14,15 +14,19 @@ module Trahald
     end
 
     def article(name)
+      puts "** article **"
       path = "#{name}.#{@ext}".force_encoding("ASCII-8BIT")
+      puts "target: " +  path
       skip = 0
       tail = UNIT
       commit = nil
       count = repo.commit_count
+      puts "count: " + count.to_s
       return nil if count == 0
       while skip < count do
         #split because repo.commits('master', false) often causes SystemStackError.
         commit = repo.commits('master', tail, skip).find{|c|
+          puts "cand: " + c.diffs.first.b_path.force_encoding("ASCII-8BIT")
           c.diffs.first.b_path.force_encoding("ASCII-8BIT") == path
         }
         break if commit
