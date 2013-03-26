@@ -80,7 +80,7 @@ module Trahald
     end
 
     def last_modified
-      first_commit.date
+      if first_commit; first_commit.date else Time.now end
     end
 
     def list
@@ -103,7 +103,7 @@ module Trahald
     end
 
     def first_commit
-      return Time.now unless repo.commits.any?
+      return nil unless repo.commits.any?
       repo.commits.first
     end
 
