@@ -18,7 +18,9 @@ module Trahald
       skip = 0
       tail = UNIT
       commit = nil
-      loop do
+      count = repo.commit_count
+      return nil if count == 0
+      while skip < count do
         #split because repo.commits('master', false) often causes SystemStackError.
         commit = repo.commits('master', tail, skip).find{|c|
           c.diffs.first.b_path.force_encoding("ASCII-8BIT") == path
