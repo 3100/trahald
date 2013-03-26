@@ -69,7 +69,7 @@ module Trahald
     end
 
     def commit!(message)
-      repo.commit_index(message)
+      repo.commit_index(message.force_encoding("ASCII-8BIT"))
     end
 
     # experimental
