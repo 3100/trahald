@@ -9,8 +9,11 @@ shared_examples 'backend db' do
     message = "コミット"
     name1 = "sample"
     body1 = "# title\n\n* hoge\n* huga\n* 123"
+    puts "before add!"
     db.add!(name1, body1).should be_true
+    puts "added"
     db.commit!(message).should be_true
+    puts "comitted"
     db.body(name1).should == body1
   end
 
