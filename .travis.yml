@@ -6,6 +6,9 @@ services:
 env:
   - RACK_ENV=redis
   - RACK_ENV=git
+before_install:
+  - sudo apt-get update -qq
+  - sudo apt-get install -qq libxml2-devel libxslt-devel
 install:
   - bundle install
 
