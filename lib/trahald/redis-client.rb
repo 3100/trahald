@@ -10,10 +10,12 @@ module Trahald
 
     # for using cache.
     MODIFIED_DATE = ".modified" # TODO: same
+    SUMMARY_KEY = ".summary"
 
     def initialize(url)
       @redis = Redis.new(:url => url)
       @params = Hash.new
+      @summary_redis = SummaryRedis.new(@redis, SUMMARY_KEY, 50)
     end
 
     def article(name)
@@ -39,6 +41,7 @@ module Trahald
         zcard = @redis.zcard name
         @redis.zadd name, zcard+1, json
         @redis.sadd KEY_SET, name
+        @summary_redis.update MarkdownBody.new(name, body, date).summary
       }
       @redis.set MODIFIED_DATE, date.to_s
     end
@@ -49,10 +52,8 @@ module Trahald
     end
 
     def data
-      @redis.smembers(KEY_SET).map do |name|
-        a = article name
-        MarkdownBody.new(name, a.body, a.date).summary
-      end
+      summaries = @summary_redis.read
+      if summaries; summaries else create_summary end
     end
 
     def last_modified
@@ -66,6 +67,16 @@ module Trahald
 
     def self.init_repo_if_needed(dir)
       # do nothing.
+    end
+
+    private
+    def create_summary
+      summaries = @redis.smembers(KEY_SET).map do |name|
+        a = article name
+        MarkdownBody.new(name, a.body, a.date).summary
+      end
+      @summary_redis.write summaries
+      summaries
     end
   end
 end
