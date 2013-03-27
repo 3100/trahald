@@ -2,6 +2,8 @@
 require_relative "trahald/article"
 require_relative "trahald/backend-base"
 require_relative "trahald/markdown-body"
+require_relative "trahald/summary"
+require_relative "trahald/summary-file"
 require_relative "trahald/version"
 
 module Trahald

@@ -5,10 +5,13 @@ module Trahald
 
   class Git < BackendBase
     UNIT = 50
+    SUMMARY_PATH = Dir::pwd + "/summary.dat"
+    SUMMARY_MAX = 50
 
     def initialize(repo_path, ext="md")
       @repo_dir = repo_path
       @ext = ext
+      @summary_file = SummaryFile.new(SUMMARY_PATH, SUMMARY_MAX)
 
       Grit::Git.git_timeout = 30
     end
@@ -75,14 +78,16 @@ module Trahald
     end
 
     def commit!(message)
-      repo.commit_index(message.force_encoding("ASCII-8BIT"))
+      repo.commit_index(message.force_encoding("ASCII-8BIT")) &&
+        @summary_file.update(create_markdown_body(first_commit).summary)
     end
 
     # experimental
     def data
       first = first_commit
       return [] unless first
-      summary 50
+      res = @summary_file.read
+      if res; res else create 50 end
     end
 
     def last_modified
@@ -126,15 +131,22 @@ module Trahald
 
     # args:
     #   max: number of commits gotten. if max is false, all commits are gotten.
-    def summary(max=false)
-      repo.commits('master', max).map{|commit|
-        path = commit.diffs.first.b_path.force_encoding("UTF-8")
-        MarkdownBody.new(
-          path.slice(0, path.size - (@ext.size+1)),
-          commit.diffs.first.b_blob.data.force_encoding("UTF-8"),
-          commit.date
-        ).summary
-      }.uniq{|i| i.name}
+    def create(max=false)
+      puts "create"
+      summaries = repo.commits('master', max).uniq{|c| c.diffs.first.b_path}.map{|commit|
+        create_markdown_body(commit).summary
+      }
+      @summary_file.write(summaries)
+      summaries
+    end
+
+    def create_markdown_body(commit)
+      path = commit.diffs.first.b_path.force_encoding("UTF-8")
+      MarkdownBody.new(
+        path.slice(0, path.size - (@ext.size+1)),
+        commit.diffs.first.b_blob.data.force_encoding("UTF-8"),
+        commit.date
+      )
     end
 
     def repo

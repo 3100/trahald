@@ -6,7 +6,6 @@ module Trahald
 
   class MarkdownBody
     MAX_TEXT_SIZE = 160
-    Summary = Struct.new("Summary", :name, :imgs, :body, :date)
 
     def initialize(name, body, date)
       @name = name
@@ -14,9 +13,9 @@ module Trahald
       @date = date
     end
 
-    def pre 
+    def pre
       raw = Sanitize.clean Kramdown::Document.new(@body).to_html
-      if raw.size > MAX_TEXT_SIZE 
+      if raw.size > MAX_TEXT_SIZE
         raw[0, MAX_TEXT_SIZE] + "..."
       else
         raw
