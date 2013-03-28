@@ -25,7 +25,7 @@ module Trahald
     def Summary.from_json(json)
       begin
         h = JSON.parse json
-        Summary.new(h["name"], h["imgs"], h["body"], h["date"])
+        Summary.new(h["name"], h["imgs"], h["body"], Time.parse(h["date"]))
       rescue exception
         "Json parse error."
       end

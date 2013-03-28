@@ -60,21 +60,9 @@ module Trahald
       end
     end
 
-    #experimental
     def body(name)
       a = article(name)
       if a; a.body else nil end
-    end
-
-    def body_old(name)
-      first = first_commit
-      return nil unless first
-
-      d = dirs(name)
-      tree = first.tree
-      file = tree / "#{name}.#{@ext}".force_encoding("ASCII-8BIT")
-      return nil unless file
-      file.data.force_encoding("UTF-8")
     end
 
     def commit!(message)
@@ -82,7 +70,6 @@ module Trahald
         @summary_file.update(create_markdown_body(first_commit).summary)
     end
 
-    # experimental
     def data
       first = first_commit
       return [] unless first
@@ -95,11 +82,9 @@ module Trahald
     end
 
     def list
-      first = first_commit
-      return [] unless first
-      list = []
-      files('', first.tree, list)
-      list.sort
+      repo.git.ls_files.split("\n").map{|f|
+        StringHelper.convertFilePath(f).gsub(/\.#{@ext}/, "")
+      }.sort
     end
 
     def self.init_repo_if_needed(dir)
