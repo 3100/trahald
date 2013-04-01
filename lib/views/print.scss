@@ -1,0 +1,11 @@
+@media print {
+  .breadcrumb {
+    display:none;
+  }
+  .tabs-below {
+    display:none;
+  }
+  p small em {
+    display:none;
+  }
+}

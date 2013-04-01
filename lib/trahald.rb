@@ -85,6 +85,10 @@ module Trahald
       scss :fd
     end
 
+    get '/css/print.css' do
+      scss :print
+    end
+      
     get %r{^/(.+?)/slide$} do
       puts "slide"
       puts params[:captures]
