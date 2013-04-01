@@ -12,6 +12,7 @@ module Trahald
     def read(max=@max)
       return @data if @data
       body = @redis.get @key
+      return nil if body.nil? || body.empty?
       JSON.parse(body).map{|s| Summary.from_json s}
     end
 
