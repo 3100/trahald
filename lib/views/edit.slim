@@ -37,11 +37,11 @@ div.row-fluid
   div.span6
     form action="/edit" method="post" style="margin-top:20px;"
       div.row-fluid
-        input type="text" name="name" value="#{@name}" class="span12 input" style="font-size: 24px;"
+        input.input.span12 type="text" name="name" value="#{@name}" style="font-size: 24px;"
       fieldset#zone.row-fluid
-        textarea name="body" id="text-input" style="border:0; box-shadow: none; height: 500px;" class="span12" #{@body}
+        textarea#text-input.span12 name="body" #{@body}
       div.row-fluid
-        input type="submit" value="作成/更新" class="btn btn-primary"
-  div.span6#preview.well style="background: #fdfdfd; margin-top: 20px;"
+        input.btn.btn-primary type="submit" value="作成/更新"
+  div#preview.span6.well
 
 == slim :tab_edit

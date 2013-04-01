@@ -81,8 +81,8 @@ module Trahald
       slim :list
     end
 
-    get '/css/fd.css' do
-      scss :fd
+    get '/css/style.css' do
+      scss :style
     end
 
     get '/css/print.css' do
