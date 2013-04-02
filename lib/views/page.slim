@@ -1,9 +1,38 @@
+/script src="/lib/pageslide/jquery.pageslide.min.js"
+/script src="https://raw.github.com/srobbin/jquery-pageslide/master/jquery.pageslide.min.js"
+script src="/lib/uitotop/js/jquery.ui.totop.min.js"
+script src="/lib/uitotop/js/easing.js"
+script src="/lib/sidr/jquery.sidr.min.js"
+/script src="/lib/meny/meny.min.js"
+/script src="https://raw.github.com/hakimel/Meny/master/js/meny.min.js"
+script src="http://lagoscript.org/files/jquery/flickable/jquery.flickable-1.0b3.min.js"
+
+javascript:
+  $(function(){
+    var defaults = {
+      contaierID: 'toTop',
+      containerHoverID: 'toTopHover',
+      scrollSpeed: 1200,
+      easingType: 'linear'
+    };
+    $().UItoTop({ easingType: 'easeOutQuart' });
+
+    $(window).flickable({section:'.section'});
+  });
+
 == slim :header
 
-== @body
+div.flickable
+  == slim :tab
 
-== slim :tab
+  div#hoge.container.section
+    div.row-fluid
+      == @body
 
-p
-  small
-    em="更新日時: #{@date.to_s}"
+    p
+      small
+        em="更新日時: #{@date.to_s}"
+
+  a#toTop href="#" style="display: inline;"
+    span#toTopHover style="opacity: 0;"
+    | To Top
