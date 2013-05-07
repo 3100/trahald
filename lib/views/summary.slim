@@ -1,5 +1,5 @@
 == slim :header
-script src="/lib/masonry/jquery.masonry.min.js"
+script src="/lib/isotope/jquery.isotope.min.js"
 
 css:
   .item{
@@ -9,24 +9,23 @@ css:
   }
 
 javascript:
-  $(function(){
-    $('#ultarget').masonry({
+  window.onload = function(){
+    $(".thumbnails").isotope({
       itemSelector: '.item',
-      columnWidth: 350
+      layoutMode: 'masonry'
     });
-  });
+  };
 
-/h1 =@title
 div.container
   - if @data.any?
-    ul#ultarget.thumbnails
+    div#ultarget.thumbnails
       - for summary in @data do
-        li.thumbnail.item.span4
+        div.thumbnail.item.span4
           a href="#{summary.name}"
             h3 =summary.name
           - if summary.imgs.any?
             a href="#{summary.name}"
-              img src="#{summary.imgs.first}" alt=""/
+              img.thumbnail-img src="#{summary.imgs.first}" alt=""/
           p=summary.body
           p
             small
