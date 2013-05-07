@@ -33,15 +33,17 @@ javascript:
 
 == slim :header
 
+/== slim :tab_edit
+
 div.row-fluid
   div.span6
-    form action="/edit" method="post" style="margin-top:20px;"
+    form action="/edit" method="post" style="margin-top:15px;"
+      div.row-fluid
+        input#submit.btn.btn-primary.btn-large type="submit" value="作成/更新"
+        input#cancel.btn.btn-large type="button" value="キャンセル" onclick="history.back();"
       div.row-fluid
         input.input.span12 type="text" name="name" value="#{@name}" style="font-size: 24px;"
       fieldset#zone.row-fluid
         textarea#text-input.span12 name="body" #{@body}
-      div.row-fluid
-        input.btn.btn-primary type="submit" value="作成/更新"
   div#preview.span6.well
 
-== slim :tab_edit

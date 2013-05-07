@@ -5,7 +5,11 @@ script src="/lib/uitotop/js/easing.js"
 script src="/lib/sidr/jquery.sidr.min.js"
 /script src="/lib/meny/meny.min.js"
 /script src="https://raw.github.com/hakimel/Meny/master/js/meny.min.js"
-script src="http://lagoscript.org/files/jquery/flickable/jquery.flickable-1.0b3.min.js"
+/script src="http://lagoscript.org/files/jquery/flickable/jquery.flickable-1.0b3.min.js"
+
+sass:
+  img
+    margin: 5px
 
 javascript:
   $(function(){
@@ -17,7 +21,7 @@ javascript:
     };
     $().UItoTop({ easingType: 'easeOutQuart' });
 
-    $(window).flickable({section:'.section'});
+    //$(window).flickable({section:'.section'});
   });
 
 == slim :header

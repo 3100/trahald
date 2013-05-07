@@ -1,14 +1,18 @@
-div.section
+div.section.fixed
   ul.nav.nav-left
     li.active
       a href="/#{@name}"
         i.icon-hand-right
+        | View
     li
       a href="/#{@name}/edit"
         i.icon-pencil
+        | Edit
     li
       a href="/#{@name}.md" target="_blank"
         i.icon-file
+        | Raw  
     li
       a href="/#{@name}/slide" target="_blank"
         i.icon-eye-open
+        | Slide

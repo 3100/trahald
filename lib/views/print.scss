@@ -1,4 +1,7 @@
 @media print {
+  ul.nav {
+    display:none;
+  }
   .breadcrumb {
     display:none;
   }
