@@ -1,5 +1,6 @@
 script src="/lib/markdown/markdown.js"
 script src="http://proger.i-forge.net/filedrop-min.js"
+script src="/lib/caret/jquery.caret.js"
 
 javascript:
   $(function(){
@@ -19,8 +20,13 @@ javascript:
         name = unix_t + "." + files[i].name.split('.').pop().toLowerCase();
         files[i].name = name
         files[i].on.done.push(function(xhr,e){
-          var input = $("#text-input").val() + "\n![" + name + "](/#{UPLOAD}/" + name + ")\n";
-          $("#text-input").val(input);
+          var target = $("#text-input");
+          target.focus();
+          var p = target.caret();
+          alert(p);
+          var text = target.val();
+          var input = text.substr(0,p) + "\n![" + name + "](/#{UPLOAD}/" + name + ")\n" + text.substr(p);
+          target.val(input);
           updatePreview();
         });
         files[i].on.error.push(function(e, xhr){
