@@ -116,7 +116,7 @@ module Trahald
       puts "md"
       puts params[:captures]
       @name = params[:captures][0]
-      @body = DB.body(@name)
+      @body =  h DB.body(@name)
       puts @body
       if @body
         slim :raw, :layout => :raw_layout

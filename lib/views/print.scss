@@ -11,4 +11,9 @@
   p small em {
     display:none;
   }
+  hr {
+    page-break-after: always;
+    //display:none;
+    border:0;
+  }
 }
