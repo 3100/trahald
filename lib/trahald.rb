@@ -88,7 +88,7 @@ module Trahald
     get '/css/print.css' do
       scss :print
     end
-      
+
     get %r{^/(.+?)/slide$} do
       puts "slide"
       puts params[:captures]
@@ -132,7 +132,8 @@ module Trahald
       article = DB.article(@name)
       if article
         last_modified article.date
-        @body = Kramdown::Document.new(article.body).to_html
+        #@body = Kramdown::Document.new(article.body).to_html
+        @body = Kramdown::Document.new(article.body, :input => 'markdown').to_html
         @date = article.date
         @tab = slim :tab
         slim :page
