@@ -46,6 +46,10 @@ module Trahald
       def request_headers
         env.inject({}){|acc, (k,v) | acc[$1.downcase] = v if k =~ /^http_(.*)/i; acc}
       end
+
+      def h(text)
+        Rack::Utils.escape_html text
+      end
     end
 
     before do
@@ -103,6 +107,10 @@ module Trahald
       end
     end
 
+    get '/new' do
+      slim :edit
+    end
+
     get %r{^/(.+?)/edit$} do
       puts "edit"
       puts params[:captures]
@@ -132,8 +140,8 @@ module Trahald
       article = DB.article(@name)
       if article
         last_modified article.date
-        #@body = Kramdown::Document.new(article.body).to_html
-        @body = Kramdown::Document.new(article.body, :input => 'markdown').to_html
+        # 利用する際にmd内のHTMLをエスケープする
+        @body = Kramdown::Document.new(h(article.body), :input => 'markdown').to_html
         @date = article.date
         @tab = slim :tab
         slim :page
@@ -143,6 +151,7 @@ module Trahald
       end
     end
 
+    # 編集時にはHTMLタグをエスケープせずに保存する
     post "/edit" do
       @name = params[:name].strip # remove spaces, tabs, etc.
       redirect "/" if @name.nil? or @name.empty?
