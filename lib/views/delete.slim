@@ -1,0 +1,18 @@
+== slim :header
+- if @error
+  div.alert.alert-error
+    button.close type="button" data-dismiss="alert" &times;
+    p =@error
+div.row-fluid
+  div.span2
+  div.span8
+    form action="/delete" method="post" style="margin-top:15px;"
+      div.row-fluid
+        input#submit.btn.btn-primary.btn-large type="submit" value="削除"
+        input#cancel.btn.btn-large type="button" value="キャンセル" onclick="history.go(-#{@try_count});"
+      div.row-fluid
+        input type="hidden" name="name" value="#{@name}"
+        input type="hidden" name="count" value="#{@try_count}"
+        p 削除用パスワード
+        input type="password" name="password" value=""
+  div.span2

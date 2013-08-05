@@ -23,5 +23,5 @@ describe "Trahald::Git", :if => defined? Trahald::Git do
     end
   end
 end
-    
+
 

@@ -14,7 +14,7 @@ module Trahald
 
     def initialize(url)
       @redis = Redis.new(:url => url)
-      @params = Hash.new
+      @pages = Hash.new
       @summary_redis = SummaryRedis.new(@redis, SUMMARY_KEY, 50)
     end
 
@@ -25,7 +25,7 @@ module Trahald
 
     # This method does not set data to Redis DB. To confirm, use commit! after add!.
     def add!(name, body)
-      @params[name] = body
+      @status_add[name] = body
     end
 
     def body(name)
@@ -33,15 +33,24 @@ module Trahald
       if a; a.body else nil end
     end
 
+    def delete(name)
+      latest_rank = @redis.zcard name
+      return false if latest_rank == 0
+      @remove_add[name] = latest_rank
+    end
+
     # message is not used.
     def commit!(message)
       date = Time.now
-      @params.each{|name, body|
+      @status_add.each{|name, body|
         json = Article.new(name, body, date).to_json
         zcard = @redis.zcard name
         @redis.zadd name, zcard+1, json
         @redis.sadd KEY_SET, name
         @summary_redis.update MarkdownBody.new(name, body, date).summary
+      }
+      @remove_add.each{|name, latest_rank|
+        @redis.zremrange(name, 0, latest_rank)
       }
       @redis.set MODIFIED_DATE, date.to_s
     end

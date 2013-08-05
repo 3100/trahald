@@ -1,5 +1,5 @@
 script src="/lib/markdown/markdown.js"
-script src="http://proger.i-forge.net/filedrop-min.js"
+script src="/lib/filedrop/filedrop-min.js"
 script src="/lib/caret/jquery.caret.js"
 
 javascript:
@@ -13,7 +13,7 @@ javascript:
     });
 
     var options = {iframe: {url: '/upload'}};
-    var zone = new FileDrop('zone', options);
+    var zone = new FileDrop('text-input', options);
     zone.on.send.push(function(files){
       var unix_t = parseInt(new Date / 1000);
       for(var i=0; i<files.length;++i){
@@ -23,7 +23,6 @@ javascript:
           var target = $("#text-input");
           target.focus();
           var p = target.caret();
-          alert(p);
           var text = target.val();
           var input = text.substr(0,p) + "\n![" + name + "](/#{UPLOAD}/" + name + ")\n" + text.substr(p);
           target.val(input);
@@ -48,8 +47,10 @@ div.row-fluid
         input#submit.btn.btn-primary.btn-large type="submit" value="作成/更新"
         input#cancel.btn.btn-large type="button" value="キャンセル" onclick="history.back();"
       div.row-fluid
+        p ページ名
         input.input.span12 type="text" name="name" value="#{@name}" style="font-size: 24px;"
-      fieldset#zone.row-fluid
+        p 本文
+
         textarea#text-input.span12 name="body" #{@body}
   div#preview.span6.well
 

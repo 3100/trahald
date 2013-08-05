@@ -34,6 +34,10 @@ module Trahald
       raise "Called abstract method: data"
     end
 
+    def delete(name)
+      raise "Called abstract method: delete"
+    end
+
     def self.init_repo_if_needed(dir)
       raise "Called abstract method: self.init_repo_if_needed"
     end

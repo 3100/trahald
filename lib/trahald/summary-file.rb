@@ -31,11 +31,13 @@ module Trahald
 
     def update(summary, max=@max)
       summaries = read(max)
-      return false unless summaries
-      summaries.reject!{|s| s.name == summary.name}
-      summaries.unshift summary
+      summaries ||= []
+      if summary
+        summaries.reject!{|s| s.name == summary.name}
+        # TODO summaryはなぜか末尾に"\n"が入っているのでchompしている
+        summaries.unshift summary unless summary.body.chomp.empty?
+      end
       write summaries
     end
-
   end
 end

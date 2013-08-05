@@ -9,11 +9,11 @@ shared_examples 'backend db' do
     message = "コミット"
     name1 = "sample"
     body1 = "# title\n\n* hoge\n* huga\n* 123"
-    puts "before add!"
+    #puts "before add!"
     db.add!(name1, body1).should be_true
-    puts "added"
+    #puts "added"
     db.commit!(message).should be_true
-    puts "comitted"
+    #puts "comitted"
     db.body(name1).should == body1
   end
 
@@ -39,5 +39,20 @@ shared_examples 'backend db' do
 
   it "should enable to output list" do
     db.list.should == ['sample', 'サンプル', 'サンプル/初夢']
+  end
+
+  it "should enable to remove a page." do
+    message = "コミット"
+    db.add!('sample', "更新").should be_true
+    db.commit!(message).should be_true
+    db.delete('sample').should be_true
+    db.commit!(message).should be_true
+    db.body('sample').should == nil
+  end
+
+  it "should unable to post a blank page." do
+    message = "コミット"
+    db.add!('blank', "").should be_false
+    db.body('blank').should == nil
   end
 end

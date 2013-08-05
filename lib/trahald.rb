@@ -9,6 +9,7 @@ require_relative "trahald/summary-redis"
 require_relative "trahald/version"
 
 module Trahald
+  require 'digest/sha2'
   require 'kramdown'
   require 'json'
   require 'sass'
@@ -17,7 +18,6 @@ module Trahald
   require 'uri'
 
   class App < Sinatra::Base
-
     configure :test do
       require_relative "trahald/git"
       require_relative "trahald/redis-client"
@@ -40,6 +40,9 @@ module Trahald
       UPLOAD_DIR = "#{Dir::pwd}/lib/public/#{UPLOAD}"
       UPLOAD_LIMIT_SIZE = 2000000 # 2MB
       Dir::mkdir UPLOAD_DIR unless FileTest.exist? UPLOAD_DIR
+      DELETE_KEY = ENV["TRAHALD_DELETE_KEY"] ? ENV["TRAHALD_DELETE_KEY"] : "trahald"
+      puts DELETE_KEY
+
     end
 
     helpers do
@@ -49,6 +52,14 @@ module Trahald
 
       def h(text)
         Rack::Utils.escape_html text
+      end
+
+      def sha(text)
+        Digest::SHA512.digest(text)
+      end
+
+      def valid_delete_key?(text)
+        sha(text) == sha(DELETE_KEY)
       end
     end
 
@@ -120,6 +131,14 @@ module Trahald
       slim :edit
     end
 
+    get %r{^/(.+?)/delete$} do
+      puts "delete"
+      puts params[:captures]
+      @name = params[:captures][0]
+      @try_count=1
+      slim :delete
+    end
+
     get %r{^/(.+?)\.md$} do
       puts "md"
       puts params[:captures]
@@ -169,6 +188,24 @@ module Trahald
 
       puts @name
       redirect "/#{URI.escape(@name)}"
+    end
+
+    post "/delete" do
+      @name = params[:name].strip # remove spaces, tabs, etc.
+      pass = params[:password]
+      unless valid_delete_key?(pass)
+        @error = 'Invalid key.'
+        @try_count = params[:count].to_i + 1
+        slim :delete
+      else
+        redirect "/" if @name.nil? or @name.empty?
+        @message = "delete #{@name}"
+
+        if DB.delete(@name)
+          DB.commit!(@message)
+        end
+        redirect "/"
+      end
     end
 
     post "/upload" do
