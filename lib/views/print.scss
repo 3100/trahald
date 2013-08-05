@@ -16,4 +16,19 @@
     //display:none;
     border:0;
   }
+
+  a:link:after, a:visited:after {
+    content: none;
+  }
+
+  a:link, a:visited {
+    -webkit-text-stroke-color: #0088cc;
+    -webkit-text-fill-color: #0088cc;
+    color: #0088cc;
+  }
+
+  a {
+    color: #0088cc;
+  }
+
 }
