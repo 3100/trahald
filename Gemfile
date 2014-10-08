@@ -4,7 +4,7 @@ source 'https://rubygems.org'
 gemspec
 
 group :git do
-  gem 'grit', '~> 2.5.0'
+  gem 'gitlab-grit', '~> 2.5.0'
 end
 
 group :redis do
