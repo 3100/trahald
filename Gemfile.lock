@@ -11,16 +11,18 @@ PATH
 GEM
   remote: https://rubygems.org/
   specs:
+    charlock_holmes (0.6.9.4)
     diff-lcs (1.2.1)
-    grit (2.5.0)
+    gitlab-grit (2.5.2)
+      charlock_holmes (~> 0.6.9)
       diff-lcs (~> 1.1)
       mime-types (~> 1.15)
       posix-spawn (~> 0.3.6)
     kramdown (0.14.2)
-    mime-types (1.21)
+    mime-types (1.25.1)
     nokogiri (1.5.6)
     nokogiri (1.5.6-java)
-    posix-spawn (0.3.6)
+    posix-spawn (0.3.9)
     rack (1.5.2)
     rack-protection (1.4.0)
       rack
@@ -52,7 +54,7 @@ PLATFORMS
   ruby
 
 DEPENDENCIES
-  grit (~> 2.5.0)
+  gitlab-grit (~> 2.5.0)
   rake (~> 10.0.3)
   redis (~> 3.0.3)
   rspec (~> 2.13.0)
