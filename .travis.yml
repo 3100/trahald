@@ -1,6 +1,8 @@
 language: ruby
 rvm:
   - 2.1.1
+  - 2.0.0
+  - 1.9.3
 services:
   - redis-server
 env:
@@ -11,17 +13,5 @@ before_install:
   - sudo apt-get install -qq libicu-dev libxml2-dev libxslt-dev
 install:
   - bundle install
-
-matrix:
-  include:
-    - rvm: 2.0.0
-      services: redis-server
-      env: RACK_ENV=redis
-      install: bundle install --without=git
-    - rvm: 1.9.3
-      services: redis-server
-      env: RACK_ENV=redis
-      install: bundle install --without=git
 #script:
 #  - bundle exec rspec spec/
-
