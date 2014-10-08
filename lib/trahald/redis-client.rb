@@ -16,6 +16,8 @@ module Trahald
       @redis = Redis.new(:url => url)
       @pages = Hash.new
       @summary_redis = SummaryRedis.new(@redis, SUMMARY_KEY, 50)
+      @status_add = Hash.new;
+      @remove_add = Hash.new;
     end
 
     def article(name)
